@@ -1,0 +1,31 @@
+<%= form_with model: @kb_article, class: "space-y-6" do |f| %>
+  <% if @kb_article.errors.any? %>
+    <div class="bg-[#f85149]/10 border border-[#f85149]/30 text-[#f85149] px-4 py-3 rounded-lg">
+      <ul class="list-disc list-inside text-sm">
+        <% @kb_article.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, class: "block text-sm font-medium text-[#8b949e] mb-2" %>
+    <%= f.text_field :title, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= f.label :category, class: "block text-sm font-medium text-[#8b949e] mb-2" %>
+    <%= f.text_field :category, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= f.label :content, class: "block text-sm font-medium text-[#8b949e] mb-2" %>
+    <%= f.text_area :content, rows: 12, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none font-mono" %>
+  </div>
+
+  <div class="flex space-x-4">
+    <%= f.submit class: "px-6 py-2 bg-[#58a6ff] text-white rounded-lg hover:bg-[#58a6ff]/80 cursor-pointer" %>
+    <%= link_to "Cancel", @kb_article.persisted? ? @kb_article : kb_articles_path, class: "px-6 py-2 bg-[#161b22] border border-[#30363d] text-[#c9d1d9] rounded-lg hover:bg-[#21262d]" %>
+  </div>
+<% end %>

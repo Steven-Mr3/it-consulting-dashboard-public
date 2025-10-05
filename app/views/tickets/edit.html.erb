@@ -1,0 +1,12 @@
+<div class="p-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[#c9d1d9]">Edit Ticket #<%= @ticket.id %></h1>
+      <p class="text-[#8b949e] mt-2"><%= @ticket.title %></p>
+    </div>
+
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>

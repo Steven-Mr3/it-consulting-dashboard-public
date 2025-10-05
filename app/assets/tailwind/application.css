@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom colors for IT Dashboard dark theme */
+  --color-dashboard-bg: #0d1117;
+  --color-dashboard-secondary: #161b22;
+  --color-dashboard-border: #30363d;
+  --color-dashboard-accent: #58a6ff;
+  --color-dashboard-success: #7ee787;
+  --color-dashboard-alert: #f85149;
+  --color-dashboard-warning: #ffa657;
+  --color-dashboard-text: #c9d1d9;
+  --color-dashboard-text-muted: #8b949e;
+}

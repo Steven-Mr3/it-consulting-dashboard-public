@@ -1,0 +1,29 @@
+<div class="p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold text-[#c9d1d9]">Clients</h1>
+    <%= link_to new_client_path, class: "px-4 py-2 bg-[#58a6ff] text-white rounded-lg hover:bg-[#58a6ff]/80 transition-colors" do %>
+      + New Client
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @clients.each do |client| %>
+      <%= link_to client, class: "block bg-[#161b22] border border-[#30363d] rounded-lg p-6 hover:bg-[#21262d] transition-colors" do %>
+        <h3 class="text-lg font-semibold text-[#c9d1d9] mb-2"><%= client.name %></h3>
+        <p class="text-sm text-[#8b949e] mb-4"><%= client.contact_email %></p>
+        <div class="flex items-center justify-between text-xs">
+          <span class="<%= client.active? ? 'text-[#7ee787]' : 'text-[#f85149]' %>">
+            <%= client.active? ? 'Active' : 'Inactive' %>
+          </span>
+          <span class="text-[#8b949e]">SLA: <%= client.sla_response_time %> min</span>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @pagy.pages > 1 %>
+    <div class="mt-6 flex justify-center">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>

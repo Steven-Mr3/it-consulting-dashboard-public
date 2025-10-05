@@ -1,0 +1,48 @@
+<div class="p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold text-[#c9d1d9]"><%= @client.name %></h1>
+    <div class="space-x-3">
+      <%= link_to "Edit", edit_client_path(@client), class: "px-4 py-2 bg-[#58a6ff] text-white rounded-lg hover:bg-[#58a6ff]/80" %>
+      <%= link_to "Back", clients_path, class: "px-4 py-2 bg-[#161b22] border border-[#30363d] text-[#c9d1d9] rounded-lg" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-sm font-medium text-[#8b949e] mb-1">SLA Compliance</h3>
+      <p class="text-3xl font-bold text-[#c9d1d9]"><%= @sla_compliance %>%</p>
+    </div>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-sm font-medium text-[#8b949e] mb-1">Total Tickets</h3>
+      <p class="text-3xl font-bold text-[#c9d1d9]"><%= @total_tickets %></p>
+    </div>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-sm font-medium text-[#8b949e] mb-1">Open Tickets</h3>
+      <p class="text-3xl font-bold text-[#c9d1d9]"><%= @open_tickets %></p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h2 class="text-lg font-semibold text-[#c9d1d9] mb-4">Contact Information</h2>
+      <dl class="space-y-3">
+        <div><dt class="text-sm text-[#8b949e]">Email</dt><dd class="text-[#c9d1d9]"><%= @client.contact_email %></dd></div>
+        <div><dt class="text-sm text-[#8b949e]">Phone</dt><dd class="text-[#c9d1d9]"><%= @client.contact_phone || 'N/A' %></dd></div>
+        <div><dt class="text-sm text-[#8b949e]">SLA Response Time</dt><dd class="text-[#c9d1d9]"><%= @client.sla_response_time %> minutes</dd></div>
+        <div><dt class="text-sm text-[#8b949e]">Contract Period</dt><dd class="text-[#c9d1d9]"><%= @client.contract_start&.strftime('%b %Y') %> - <%= @client.contract_end&.strftime('%b %Y') %></dd></div>
+      </dl>
+    </div>
+
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h2 class="text-lg font-semibold text-[#c9d1d9] mb-4">Recent Tickets</h2>
+      <div class="space-y-2">
+        <% @tickets.each do |ticket| %>
+          <%= link_to ticket, class: "block p-2 hover:bg-[#21262d] rounded" do %>
+            <p class="text-sm text-[#c9d1d9]"><%= ticket.title %></p>
+            <p class="text-xs text-[#8b949e]"><%= ticket.status.titleize %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

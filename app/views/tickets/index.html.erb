@@ -1,0 +1,102 @@
+<div class="p-4 md:p-8">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 md:mb-8 gap-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold text-[#c9d1d9]">Tickets</h1>
+      <p class="text-[#8b949e] mt-2"><%= @pagy.count %> total tickets</p>
+    </div>
+    <%= link_to new_ticket_path, class: "px-4 py-2 bg-[#58a6ff] text-white rounded-lg hover:bg-[#58a6ff]/80 transition-colors text-center" do %>
+      <span>+ New Ticket</span>
+    <% end %>
+  </div>
+
+  <%# Filters %>
+  <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 mb-6">
+    <%= form_with url: tickets_path, method: :get, class: "grid grid-cols-1 md:grid-cols-5 gap-4" do |f| %>
+      <div>
+        <%= f.text_field :query, placeholder: "Search tickets...", value: params[:query], class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+      </div>
+      <div>
+        <%= f.select :status, options_for_select([['All Statuses', '']] + Ticket.statuses.keys.map { |k| [k.titleize, k] }, params[:status]), {}, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+      </div>
+      <div>
+        <%= f.select :priority, options_for_select([['All Priorities', '']] + Ticket.priorities.keys.map { |k| [k.titleize, k] }, params[:priority]), {}, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+      </div>
+      <div>
+        <%= f.select :client_id, options_for_select([['All Clients', '']] + @clients.map { |c| [c.name, c.id] }, params[:client_id]), {}, class: "w-full px-4 py-2 bg-[#0d1117] border border-[#30363d] rounded-lg text-[#c9d1d9] focus:border-[#58a6ff] focus:outline-none" %>
+      </div>
+      <div>
+        <%= f.submit "Filter", class: "w-full px-4 py-2 bg-[#58a6ff] text-white rounded-lg hover:bg-[#58a6ff]/80 transition-colors cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Tickets Table %>
+  <div class="bg-[#161b22] border border-[#30363d] rounded-lg overflow-x-auto">
+    <table class="w-full min-w-[800px]">
+      <thead class="bg-[#21262d] border-b border-[#30363d]">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Title</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Client</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Priority</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Assigned To</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Created</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[#30363d]">
+        <% @tickets.each do |ticket| %>
+          <tr class="hover:bg-[#21262d] transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-[#c9d1d9]">#<%= ticket.id %></td>
+            <td class="px-6 py-4 text-sm text-[#c9d1d9]">
+              <%= link_to ticket.title, ticket, class: "text-[#58a6ff] hover:underline" %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-[#8b949e]"><%= ticket.client.name %></td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded <%= case ticket.status
+                when 'open' then 'bg-[#58a6ff]/20 text-[#58a6ff]'
+                when 'in_progress' then 'bg-[#ffa657]/20 text-[#ffa657]'
+                when 'resolved' then 'bg-[#7ee787]/20 text-[#7ee787]'
+                when 'closed' then 'bg-[#8b949e]/20 text-[#8b949e]'
+              end %>">
+                <%= ticket.status.titleize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded <%= case ticket.priority
+                when 'low' then 'bg-[#7ee787]/20 text-[#7ee787]'
+                when 'medium' then 'bg-[#58a6ff]/20 text-[#58a6ff]'
+                when 'high' then 'bg-[#ffa657]/20 text-[#ffa657]'
+                when 'critical' then 'bg-[#f85149]/20 text-[#f85149]'
+              end %>">
+                <%= ticket.priority.titleize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-[#8b949e]">
+              <%= ticket.assigned_to&.name || 'Unassigned' %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-[#8b949e]">
+              <%= ticket.created_at.strftime('%b %d, %Y') %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+              <%= link_to edit_ticket_path(ticket), class: "text-[#58a6ff] hover:underline" do %>
+                Edit
+              <% end %>
+              <%= button_to ticket_path(ticket), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "text-[#f85149] hover:underline" do %>
+                Delete
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <% if @pagy.pages > 1 %>
+    <div class="mt-6 flex justify-center">
+      <%== pagy_nav(@pagy, pagy_id: 'pagy-nav', link_extra: 'class="px-3 py-2 bg-[#161b22] border border-[#30363d] text-[#c9d1d9] hover:bg-[#21262d] transition-colors"') %>
+    </div>
+  <% end %>
+</div>

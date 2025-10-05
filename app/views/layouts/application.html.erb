@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "IT Consulting Dashboard" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Tailwind CSS %>
+    <link rel="stylesheet" href="/assets/tailwind.css" data-turbo-track="reload">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%# Chart.js CDN %>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  </head>
+
+  <body class="h-full bg-[#0d1117] text-[#c9d1d9]">
+    <% if user_signed_in? %>
+      <% counters = sidebar_counters %>
+      <div class="flex h-full" data-controller="sidebar">
+        <%# Mobile menu button %>
+        <button data-action="click->sidebar#toggle" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-[#161b22] rounded-lg text-white border border-[#30363d]">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+
+        <%# Sidebar %>
+        <div class="hidden lg:flex w-64 bg-[#161b22] border-r border-[#30363d] flex-col" data-sidebar-target="sidebar">
+          <div class="p-6 border-b border-[#30363d]">
+            <h1 class="text-xl font-bold text-[#58a6ff]">IT Dashboard</h1>
+            <p class="text-sm text-[#8b949e] mt-1"><%= current_user.name %></p>
+          </div>
+
+          <nav class="flex-1 p-4 space-y-2">
+            <%= link_to dashboard_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(dashboard_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Dashboard</span>
+              </div>
+            <% end %>
+
+            <%= link_to tickets_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(tickets_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span>Tickets</span>
+              </div>
+              <% if counters[:tickets] > 0 %>
+                <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full"><%= counters[:tickets] %></span>
+              <% end %>
+            <% end %>
+
+            <%= link_to clients_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(clients_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <span>Clients</span>
+              </div>
+              <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full"><%= counters[:clients] %></span>
+            <% end %>
+
+            <%= link_to kb_articles_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(kb_articles_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Knowledge Base</span>
+              </div>
+            <% end %>
+
+            <%= link_to alerts_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(alerts_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                <span>Alerts</span>
+              </div>
+              <% if counters[:alerts] > 0 %>
+                <span class="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse"><%= counters[:alerts] %></span>
+              <% end %>
+            <% end %>
+
+            <%= link_to reports_path, class: "flex items-center justify-between px-4 py-3 rounded-lg #{current_page?(reports_path) ? 'bg-[#58a6ff] text-white' : 'text-[#c9d1d9] hover:bg-[#21262d]'} transition-colors" do %>
+              <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Reports</span>
+              </div>
+            <% end %>
+          </nav>
+
+          <div class="p-4 border-t border-[#30363d]">
+            <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center space-x-3 px-4 py-3 rounded-lg text-[#c9d1d9] hover:bg-[#21262d] transition-colors w-full text-left" do %>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Sign Out</span>
+            <% end %>
+          </div>
+        </div>
+
+        <%# Main Content %>
+        <div class="flex-1 overflow-auto pt-16 lg:pt-0">
+          <%# Flash Messages %>
+          <% if notice.present? || alert.present? %>
+            <div class="p-4">
+              <% if notice.present? %>
+                <div class="bg-[#7ee787]/10 border border-[#7ee787]/30 text-[#7ee787] px-4 py-3 rounded-lg mb-4">
+                  <%= notice %>
+                </div>
+              <% end %>
+              <% if alert.present? %>
+                <div class="bg-[#f85149]/10 border border-[#f85149]/30 text-[#f85149] px-4 py-3 rounded-lg mb-4">
+                  <%= alert %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </div>
+    <% else %>
+      <%# Login/Signup Pages %>
+      <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <%= yield %>
+      </div>
+    <% end %>
+  </body>
+</html>

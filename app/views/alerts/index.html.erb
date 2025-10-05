@@ -1,0 +1,41 @@
+<div class="p-8">
+  <h1 class="text-3xl font-bold text-[#c9d1d9] mb-8">System Alerts</h1>
+
+  <div class="space-y-4">
+    <% @alerts.each do |alert| %>
+      <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start space-x-4 flex-1">
+            <svg class="w-6 h-6 flex-shrink-0 <%= alert.severity == 'critical' ? 'text-[#f85149]' : alert.severity == 'warning' ? 'text-[#ffa657]' : 'text-[#58a6ff]' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-[#c9d1d9]"><%= alert.alert_type.titleize %></h3>
+              <p class="text-[#8b949e] mt-1"><%= alert.message %></p>
+              <div class="flex items-center space-x-4 mt-3 text-sm text-[#8b949e]">
+                <span>Severity: <%= alert.severity.titleize %></span>
+                <% if alert.ticket %>
+                  <span>•</span>
+                  <%= link_to "Ticket ##{alert.ticket.id}", alert.ticket, class: "text-[#58a6ff] hover:underline" %>
+                <% end %>
+                <span>•</span>
+                <span><%= time_ago_in_words(alert.created_at) %> ago</span>
+              </div>
+            </div>
+          </div>
+          <% unless alert.resolved %>
+            <%= button_to "Resolve", resolve_alert_path(alert), method: :patch, class: "px-4 py-2 bg-[#7ee787]/20 text-[#7ee787] rounded-lg hover:bg-[#7ee787]/30 transition-colors ml-4" %>
+          <% else %>
+            <span class="px-4 py-2 bg-[#8b949e]/20 text-[#8b949e] rounded-lg ml-4">Resolved</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @pagy.pages > 1 %>
+    <div class="mt-6 flex justify-center">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>

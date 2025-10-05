@@ -1,0 +1,248 @@
+<div class="p-4 md:p-8">
+  <div class="mb-6 md:mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-[#c9d1d9]">Dashboard</h1>
+    <p class="text-[#8b949e] mt-2">Welcome back, <%= current_user.name %>!</p>
+  </div>
+
+  <%# KPI Cards %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <%# SLA Compliance %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-[#8b949e] text-sm font-medium">SLA Compliance</h3>
+        <svg class="w-6 h-6 text-[#7ee787]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="text-3xl font-bold text-[#c9d1d9]"><%= @sla_compliance %>%</div>
+      <p class="text-xs text-[#8b949e] mt-2">Target: 95%</p>
+    </div>
+
+    <%# MTTR %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-[#8b949e] text-sm font-medium">MTTR</h3>
+        <svg class="w-6 h-6 text-[#58a6ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="text-3xl font-bold text-[#c9d1d9]"><%= @mttr %>h</div>
+      <p class="text-xs text-[#8b949e] mt-2">Mean Time To Resolution</p>
+    </div>
+
+    <%# Uptime %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-[#8b949e] text-sm font-medium">System Uptime</h3>
+        <svg class="w-6 h-6 text-[#7ee787]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <div class="text-3xl font-bold text-[#c9d1d9]"><%= @uptime %>%</div>
+      <p class="text-xs text-[#8b949e] mt-2">Last 30 days</p>
+    </div>
+
+    <%# Open vs Closed %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-[#8b949e] text-sm font-medium">Tickets</h3>
+        <svg class="w-6 h-6 text-[#ffa657]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      </div>
+      <div class="flex items-baseline space-x-3">
+        <div class="text-3xl font-bold text-[#c9d1d9]"><%= @open_tickets %></div>
+        <div class="text-lg text-[#8b949e]">/ <%= @total_tickets %></div>
+      </div>
+      <p class="text-xs text-[#8b949e] mt-2">Open / Total</p>
+    </div>
+  </div>
+
+  <%# Charts %>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <%# Tickets Over Time %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-[#c9d1d9] mb-4">Tickets Created (Last 30 Days)</h3>
+      <canvas id="ticketsTrendChart" class="w-full" style="max-height: 300px;"></canvas>
+    </div>
+
+    <%# Tickets by Status %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-[#c9d1d9] mb-4">Tickets by Status</h3>
+      <canvas id="statusChart" class="w-full" style="max-height: 300px;"></canvas>
+    </div>
+
+    <%# Tickets by Priority %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-[#c9d1d9] mb-4">Tickets by Priority</h3>
+      <canvas id="priorityChart" class="w-full" style="max-height: 300px;"></canvas>
+    </div>
+
+    <%# Tickets by Category %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-[#c9d1d9] mb-4">Tickets by Category</h3>
+      <canvas id="categoryChart" class="w-full" style="max-height: 300px;"></canvas>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <%# Recent Tickets %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-[#c9d1d9]">Recent Tickets</h3>
+        <%= link_to "View All", tickets_path, class: "text-sm text-[#58a6ff] hover:underline" %>
+      </div>
+      <div class="space-y-3">
+        <% @recent_tickets.each do |ticket| %>
+          <div class="border-b border-[#30363d] pb-3 last:border-0">
+            <%= link_to ticket, class: "block hover:bg-[#21262d] p-2 rounded transition-colors" do %>
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="text-sm font-medium text-[#c9d1d9]"><%= ticket.title %></h4>
+                  <p class="text-xs text-[#8b949e] mt-1"><%= ticket.client.name %></p>
+                </div>
+                <span class="px-2 py-1 text-xs rounded <%= ticket.priority == 'critical' ? 'bg-[#f85149]/20 text-[#f85149]' : ticket.priority == 'high' ? 'bg-[#ffa657]/20 text-[#ffa657]' : 'bg-[#58a6ff]/20 text-[#58a6ff]' %>">
+                  <%= ticket.priority.capitalize %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Active Alerts %>
+    <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-[#c9d1d9]">Active Alerts</h3>
+        <%= link_to "View All", alerts_path, class: "text-sm text-[#58a6ff] hover:underline" %>
+      </div>
+      <div class="space-y-3">
+        <% if @active_alerts.any? %>
+          <% @active_alerts.each do |alert| %>
+            <div class="border-b border-[#30363d] pb-3 last:border-0">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 flex-shrink-0 <%= alert.severity == 'critical' ? 'text-[#f85149]' : alert.severity == 'warning' ? 'text-[#ffa657]' : 'text-[#58a6ff]' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div class="flex-1">
+                  <h4 class="text-sm font-medium text-[#c9d1d9]"><%= alert.alert_type.titleize %></h4>
+                  <p class="text-xs text-[#8b949e] mt-1"><%= alert.message %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-[#8b949e] text-center py-4">No active alerts</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chartDefaults = {
+      plugins: {
+        legend: {
+          labels: { color: '#c9d1d9' }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b949e' },
+          grid: { color: '#30363d' }
+        },
+        y: {
+          ticks: { color: '#8b949e' },
+          grid: { color: '#30363d' }
+        }
+      }
+    };
+
+    // Tickets Trend Chart
+    const ticketsTrendCtx = document.getElementById('ticketsTrendChart');
+    if (ticketsTrendCtx) {
+      new Chart(ticketsTrendCtx, {
+        type: 'line',
+        data: {
+          labels: <%= raw @tickets_by_day.keys.map(&:to_s).to_json %>,
+          datasets: [{
+            label: 'Tickets Created',
+            data: <%= raw @tickets_by_day.values.to_json %>,
+            borderColor: '#58a6ff',
+            backgroundColor: 'rgba(88, 166, 255, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          ...chartDefaults,
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    // Status Chart
+    const statusCtx = document.getElementById('statusChart');
+    if (statusCtx) {
+      new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+          labels: <%= raw @tickets_by_status.keys.map(&:titleize).to_json %>,
+          datasets: [{
+            data: <%= raw @tickets_by_status.values.to_json %>,
+            backgroundColor: ['#58a6ff', '#ffa657', '#7ee787', '#8b949e']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#c9d1d9' }
+            }
+          }
+        }
+      });
+    }
+
+    // Priority Chart
+    const priorityCtx = document.getElementById('priorityChart');
+    if (priorityCtx) {
+      new Chart(priorityCtx, {
+        type: 'bar',
+        data: {
+          labels: <%= raw @tickets_by_priority.keys.map(&:titleize).to_json %>,
+          datasets: [{
+            label: 'Tickets',
+            data: <%= raw @tickets_by_priority.values.to_json %>,
+            backgroundColor: ['#7ee787', '#58a6ff', '#ffa657', '#f85149']
+          }]
+        },
+        options: {
+          ...chartDefaults,
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    // Category Chart
+    const categoryCtx = document.getElementById('categoryChart');
+    if (categoryCtx) {
+      new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+          labels: <%= raw @tickets_by_category.keys.map(&:titleize).to_json %>,
+          datasets: [{
+            data: <%= raw @tickets_by_category.values.to_json %>,
+            backgroundColor: ['#58a6ff', '#7ee787', '#ffa657', '#f85149']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#c9d1d9' }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>

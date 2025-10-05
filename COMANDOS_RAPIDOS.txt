@@ -1,0 +1,231 @@
+# ⚡ COMANDOS RÁPIDOS - IT Consulting Dashboard
+
+## 📦 SUBIR A GITHUB (Copiar y pegar uno por uno)
+
+# 1. Ver estado actual
+git status
+
+# 2. Agregar todos los archivos
+git add .
+
+# 3. Crear commit inicial
+git commit -m "Initial commit: IT Consulting Dashboard v1.0 - Enterprise IT Support Platform with ITIL workflow, SLA monitoring, and real-time analytics"
+
+# 4. Crear repositorio en GitHub primero (github.com/new), luego:
+# REEMPLAZA "TU-USUARIO" con tu usuario de GitHub
+git remote add origin https://github.com/TU-USUARIO/it-consulting-dashboard.git
+
+# 5. Verificar remote
+git remote -v
+
+# 6. Push a GitHub
+git push -u origin master
+# (Te pedirá usuario y token de GitHub)
+
+# 7. Crear tag para release
+git tag -a v1.0.0 -m "Release v1.0.0 - Initial stable release"
+
+# 8. Push tag
+git push origin v1.0.0
+
+✅ ¡LISTO! Tu proyecto está en GitHub
+
+
+## 🚀 INICIAR APLICACIÓN LOCALMENTE
+
+# Opción 1: Con Tailwind watch (Recomendado)
+bin/dev
+
+# Opción 2: Solo servidor Rails
+rails server
+
+# Luego abre: http://localhost:3000
+
+# Login con:
+# Email: admin@example.com
+# Password: password123
+
+
+## 🎨 COMPILAR TAILWIND CSS
+
+# Compilar una vez
+rails tailwindcss:build
+
+# Modo watch (recompila automáticamente)
+rails tailwindcss:watch
+
+
+## 🗃️ BASE DE DATOS
+
+# Crear base de datos
+rails db:create
+
+# Ejecutar migraciones
+rails db:migrate
+
+# Cargar datos de ejemplo
+rails db:seed
+
+# Reset completo (CUIDADO: borra todo)
+rails db:reset
+
+
+## 📝 GIT - COMANDOS ÚTILES
+
+# Ver estado
+git status
+
+# Ver cambios
+git diff
+
+# Agregar archivo específico
+git add app/controllers/tickets_controller.rb
+
+# Commit
+git commit -m "feat: Add email notifications"
+
+# Push
+git push
+
+# Pull (traer cambios)
+git pull
+
+# Ver historial
+git log --oneline
+
+# Deshacer último commit (mantiene cambios)
+git reset --soft HEAD~1
+
+
+## 🔧 ACTUALIZAR DESPUÉS DE CAMBIOS
+
+# 1. Hiciste cambios en el código
+# 2. Agregar cambios
+git add .
+
+# 3. Commit con mensaje descriptivo
+git commit -m "feat: Add PDF export to reports"
+
+# 4. Push a GitHub
+git push
+
+
+## 📸 REEMPLAZAR SCREENSHOTS EN README
+
+# 1. Crear carpeta para imágenes
+mkdir -p docs/images
+
+# 2. Guarda tus screenshots en docs/images/
+
+# 3. Edita README.md y reemplaza:
+![Dashboard](https://via.placeholder.com...)
+# por:
+![Dashboard](docs/images/dashboard.png)
+
+# 4. Commit y push
+git add .
+git commit -m "docs: Add real screenshots"
+git push
+
+
+## 🏷️ TEMAS/TOPICS PARA GITHUB
+
+Al crear el repo en GitHub, agrega estos topics:
+ruby-on-rails
+itil
+dashboard
+sla-monitoring
+ticketing-system
+analytics
+tailwind-css
+postgresql
+knowledge-base
+multi-tenant
+service-management
+help-desk
+
+
+## 📱 ORDEN DE POSTS PARA LINKEDIN
+
+Semana 1:
+- Día 1 (Lunes): Post 1 - Lanzamiento
+- Día 4 (Jueves): Post 3 - Tech Deep Dive
+
+Semana 2:
+- Día 9 (Martes): Post 2 - Caso de Uso MSP
+- Día 12 (Viernes): Post 4 - Features Showcase
+
+Semana 3:
+- Día 15 (Lunes): Post 5 - Open Source Value
+- Día 18 (Miércoles): Post 6 - Call to Action
+
+Semana 4:
+- Día 22 (Lunes): Post 8 - Behind The Scenes
+
+
+## 🔑 CREAR TOKEN DE GITHUB (Para push)
+
+1. Ve a: github.com/settings/tokens
+2. Click: "Generate new token (classic)"
+3. Nombre: "IT Dashboard Development"
+4. Permisos: Marca "repo" (todos)
+5. Click: "Generate token"
+6. COPIA EL TOKEN (solo se muestra una vez)
+7. Cuando hagas git push, usa:
+   - Username: tu-usuario
+   - Password: [PEGA EL TOKEN AQUÍ]
+
+
+## 🌟 PERSONALIZAR ANTES DE PUBLICAR
+
+Buscar y reemplazar en todos los archivos:
+
+"tu-usuario" → tu usuario real de GitHub
+"TU-USUARIO" → tu usuario real de GitHub
+"bryan.martinez@example.com" → tu email real
+"linkedin.com/in/bryan-martinez" → tu LinkedIn
+"bryanmartinez.dev" → tu portfolio
+"Bryan Steven Martínez Ramírez" → tu nombre
+
+
+## 🆘 SOLUCIÓN DE PROBLEMAS
+
+# Si Tailwind no carga:
+rails tailwindcss:build
+cp app/assets/builds/tailwind.css public/assets/tailwind.css
+rails server
+
+# Si falla bundle install:
+bundle update
+
+# Si falla db:migrate:
+rails db:drop db:create db:migrate db:seed
+
+# Si no puedes hacer push a GitHub:
+# Verifica que el remote esté bien:
+git remote -v
+# Si está mal:
+git remote remove origin
+git remote add origin https://github.com/TU-USUARIO/it-consulting-dashboard.git
+
+
+## ✅ VERIFICAR QUE TODO FUNCIONA
+
+1. Servidor arranca sin errores ✓
+2. Puedes hacer login ✓
+3. Dashboard muestra KPIs ✓
+4. Puedes crear tickets ✓
+5. Tema oscuro se ve bien ✓
+6. No hay errores en consola del navegador ✓
+
+
+## 📞 CONTACTO
+
+Si tienes problemas, verifica:
+1. QUICK_START.md - Guía de inicio
+2. GITHUB_SETUP.md - Guía de GitHub
+3. SETUP_COMPLETO.md - Guía completa
+4. README.md - Documentación principal
+
+
+¡ÉXITO CON TU PROYECTO! 🚀
