@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Administrator/Documents/**)",
+      "Bash(ruby --version)",
+      "Bash(rails --version)",
+      "Read(//c/Users/Administrator/**)",
+      "Bash(bundle install:*)",
+      "Bash(rails:*)",
+      "Bash(cat:*)",
+      "Bash(timeout 5 rails server)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

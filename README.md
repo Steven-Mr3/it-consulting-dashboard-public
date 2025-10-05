@@ -20,7 +20,7 @@ Una solución completa y escalable para empresas de consultoría IT, MSPs y depa
 
 > ⚠️ **Nota:** La demo gratuita se duerme tras 15 minutos de inactividad. La primera carga puede tardar ~30 segundos.
 
-[💼 **LinkedIn**](https://www.linkedin.com/in/steven-mart%C3%ADnez?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BGLLkoTdeQ0arzc1wjdD2oQ%3D%3D) | [🐛 **Reportar Bug**](https://github.com/Steven-Mr3/it-consulting-dashboard-public/issues) | [⭐ **GitHub**](https://github.com/Steven-Mr3/it-consulting-dashboard-public)
+[💼 **LinkedIn**](https://www.linkedin.com/in/steven-mart%C3%ADnez?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BGLLkoTdeQ0arzc1wjdD2oQ%3D%3D) | [🐛 **Reportar Bug**](../../issues)
 
 ---
 
