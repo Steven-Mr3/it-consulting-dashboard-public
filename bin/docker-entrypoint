@@ -6,9 +6,21 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
+# Expand literal $PORT in arguments — deploy platforms may inject --port $PORT
+# using exec form (JSON array) where shell variable expansion does not occur.
+EXPANDED=()
+for arg in "$@"; do
+    EXPANDED+=("${arg/\$PORT/${PORT}}")
+done
+set -- "${EXPANDED[@]}"
+
+# If running the rails server then create or migrate existing database.
+# Scan all consecutive arg pairs so extra trailing flags (e.g. --port N) are handled.
+for ((i=1; i<$#; i++)); do
+    if [ "${@:$i:1}" = "./bin/rails" ] && [ "${@:$((i+1)):1}" = "server" ]; then
+        ./bin/rails db:prepare
+        break
+    fi
+done
 
 exec "${@}"
