@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby.exe
 APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
+
+# Expand literal $VARNAME tokens in ARGV — deploy platforms may inject
+# --port $PORT via exec form (JSON array) where shell expansion does not occur.
+ARGV.map! { |arg| arg.gsub(/\A\$([A-Z_][A-Z0-9_]*)\z/) { ENV[$1] || $& } }
+
 require "rails/commands"
