@@ -1,8 +1,3 @@
-databases:
-  - name: it-dashboard-db
-    databaseName: it_dashboard_production
-    user: it_dashboard
-
 services:
   - type: web
     name: it-consulting-dashboard
@@ -11,9 +6,7 @@ services:
     startCommand: "bundle exec rails server -b 0.0.0.0 -e production"
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: it-dashboard-db
-          property: connectionString
+        sync: false
       - key: RAILS_MASTER_KEY
         sync: false
       - key: SENTRY_DSN
