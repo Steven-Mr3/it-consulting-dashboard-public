@@ -7,6 +7,9 @@ class User < ApplicationRecord
   # Enums
   enum :role, { admin: 0, consultant: 1, client_user: 2 }
 
+  # Avatar
+  has_one_attached :avatar
+
   # Associations
   belongs_to :client, optional: true
   has_many :created_tickets, class_name: 'Ticket', foreign_key: 'created_by_id', dependent: :nullify

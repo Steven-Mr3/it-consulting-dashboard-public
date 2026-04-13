@@ -40,7 +40,16 @@
         <div class="hidden lg:flex w-64 bg-[#161b22] border-r border-[#30363d] flex-col" data-sidebar-target="sidebar">
           <div class="p-6 border-b border-[#30363d]">
             <h1 class="text-xl font-bold text-[#58a6ff]">IT Dashboard</h1>
-            <p class="text-sm text-[#8b949e] mt-1"><%= current_user.name %></p>
+            <%= link_to edit_user_registration_path, class: "flex items-center space-x-3 mt-3 group" do %>
+              <% if current_user.avatar.attached? %>
+                <%= image_tag url_for(current_user.avatar), class: "w-9 h-9 rounded-full object-cover border border-[#30363d] group-hover:border-[#58a6ff] transition-colors flex-shrink-0", alt: current_user.name %>
+              <% else %>
+                <div class="w-9 h-9 rounded-full bg-[#21262d] border border-[#30363d] group-hover:border-[#58a6ff] flex items-center justify-center flex-shrink-0 transition-colors">
+                  <span class="text-sm font-bold text-[#58a6ff]"><%= current_user.name&.first&.upcase %></span>
+                </div>
+              <% end %>
+              <span class="text-sm text-[#8b949e] group-hover:text-[#c9d1d9] transition-colors truncate"><%= current_user.name %></span>
+            <% end %>
           </div>
 
           <nav class="flex-1 p-4 space-y-2">
