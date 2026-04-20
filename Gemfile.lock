@@ -193,7 +193,8 @@ GEM
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
-    psych (4.0.6)
+    psych (5.2.6)
+      date
       stringio
     puma (7.0.4)
       nio4r (~> 2.0)
@@ -372,7 +373,7 @@ DEPENDENCIES
   pagy
   pg (~> 1.5)
   propshaft
-  psych (< 5.0)
+  psych (< 6.0)
   puma (>= 5.0)
   pundit
   rails (~> 8.0.2, >= 8.0.2.1)

@@ -62,7 +62,7 @@ gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 
 # Windows compatibility
-gem "psych", "< 5.0"
+gem "psych", "< 6.0"
 
 # Error tracking and monitoring
 gem "sentry-ruby"
